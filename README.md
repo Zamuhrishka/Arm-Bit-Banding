@@ -29,7 +29,7 @@ This data type is implementing of ARM bit-banding mechanism. It stores the alias
 
 For usage this library you need make next steps:
 
-1. Define `uin8_t` flags state variables which **placed within SRAM bit-band region**.
+1. Define `uint8_t` flags state variables which **placed within SRAM bit-band region**.
 
 > As flag variable you can use only `uin8_t` variables!
 
