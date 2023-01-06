@@ -43,7 +43,7 @@
 typedef volatile uint32_t* flag_t;
 
 /// Invalid value for `flag_t` data type
-#define INVALID_FLAG (volatile uint32_t*)NULL
+#define INVALID_FLAG (flag_t)NULL
 //_____ M A C R O S ___________________________________________________________
 /**
  * \brief   Calculation of position of the target bit in the bit-band SRAM memory region
@@ -51,7 +51,6 @@ typedef volatile uint32_t* flag_t;
  * \param[in]   byte_offset: number of the byte in the bit-band region that
  *                          contains the targeted bit
  * \param[in]   bit_num: bit position (0-7) of the targeted bit
- *
  */
 #define BIT_WORD_OFFSET(byte_offset, bit_num) (((byte_offset)*32) + ((bit_num)*4))
 
@@ -62,26 +61,24 @@ typedef volatile uint32_t* flag_t;
  * \param[in]   byte_offset: number of the byte in the bit-band region that
  *                           contains the targeted bit
  * \param[in]   bit_num: bit position (0-7) of the targeted bit
- *
  */
-#define BIT_WORD_ADDR(byte_offset, bit_num) (flag_t)((SRAM1_BB_BASE + BIT_WORD_OFFSET(byte_offset, bit_num)))
+#define BIT_WORD_ADDR(byte_offset, bit_num) (flag_t)(((SRAM1_BB_BASE) + BIT_WORD_OFFSET(byte_offset, bit_num)))
 
 /**
  * \brief Calculation byte offset from SRAM bit-band region base for given address.
  *
  * \param[in]   ADDR: address of selected store flags variable.
- *
  */
-#define BYTE_OFFSET(ADDR) (((uint32_t)ADDR - (uint32_t)SRAM1_BASE))
+#define BYTE_OFFSET(ADDR) (((uint32_t)(ADDR) - (uint32_t)(SRAM1_BASE)))
 
 /**
  * \brief Calculation of address of the word in the alias SRAM memory region that maps to
  *        the targeted bit for given variable
  *
  * \param[in]   ADDR: address of selected store flags variable.
- *
+ * \param[in]   BIT: bit position in selected flags variable.
  */
-#define MAKE_FLAG(ADDR, BIT) (BIT_WORD_ADDR(BYTE_OFFSET(ADDR), BIT))
+#define MAKE_FLAG(ADDR, BIT) (flag_t)(BIT_WORD_ADDR(BYTE_OFFSET(ADDR), (BIT)))
 
 //_____ V A R I A B L E S _____________________________________________________
 
@@ -100,7 +97,7 @@ typedef volatile uint32_t* flag_t;
  *
  *\code
  * uint8_t state = 0;
- * flag_t error_flag = abb_make_flag(&state, 3);
+ * flag_t error_flag = abb_make(&state, 3);
  *\endcode
  *
  * \param[in]   addr: address of selected store flags variable.
@@ -108,7 +105,7 @@ typedef volatile uint32_t* flag_t;
  *
  * \return special type `flag_t` for bit-banding flags.
  */
-static inline flag_t abb_make_flag(volatile uint32_t* addr, uint8_t bit)
+static inline flag_t abb_make(volatile uint8_t* addr, uint8_t bit)
 {
     return (bit < 8) ? MAKE_FLAG(addr, bit) : INVALID_FLAG;
 }
