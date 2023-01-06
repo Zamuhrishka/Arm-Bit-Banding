@@ -37,14 +37,14 @@ For usage this library you need make next steps:
 uint8_t state = 0;
 ```
 
-1. Next you need to create `flag_t` variable for each necessary bit (flag) inside `state` variable:
+2. Next you need to create `flag_t` variable for each necessary bit (flag) inside `state` variable:
 
 ```c
-flag_t error_flag = bb_make(&state, 3);
-flag_t ready_flag = bb_make(&state, 6);
+flag_t error_flag = abb_make(&state, 3);
+flag_t ready_flag = abb_make(&state, 6);
 ```
 
-1. After this you can use this `flag_t` variables for atomic bit manipulation:
+3. After this you can use this `flag_t` variables for atomic bit manipulation:
 
 ```c
 //Set bit
